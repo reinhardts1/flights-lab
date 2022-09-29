@@ -1,0 +1,72 @@
+
+
+<%- include('../partials/html-head') %>
+<link rel="stylesheet" href="/stylesheets/flights/show.css" />
+<%- include('../partials/nav') %>
+
+<main>
+  <h1><%= title %></h1>
+  <section>
+    <div>Airline: </div>
+    <div><%= flight.airline %></div>
+    <div>Airport: </div>
+    <div><%= flight.airport %></div>
+    <div>Flight Number: </div>
+    <div><%= flight.flightNo %></div>
+    <div>Departure: </div>
+    <div><%= flight.departure %></div>
+    <div>Meals:</div>
+      <ul>
+        <% flight.meals.forEach(newMeal => { %>
+          <li><%= newMeal.name %></li>
+        <% }) %>
+      </ul>
+  </section>
+  <form id="add-to-meals" action="/flights/<%= flight.id %>/meals" method="POST">
+    <select name="mealId">
+      <% meals.forEach(meal => { %>
+        <option value="<%= meal._id %>"><%= meal.name %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Add to Meals</button>
+  </form>
+  <h2> Add Tickets</h2>
+  <form 
+    id="add-ticket-form"
+    action="/flights/<%= flight._id %>/tickets"
+    method="POST"
+  >
+    <label for="price">Price:</label>
+    <input name="price" id="price-input" type="number" placeholder="Enter ticket price">
+    <label for="seat">Seat:</label>
+    <input name="seat" id="seat-input" type="text" required pattern="[A-F][1-9]\d?" placeholder="Enter seat">
+    <button type="submit">Add Ticket</button>
+  </form>
+  <h2>All Tickets</h2>
+  <% if (flight.tickets.length) { %>
+    <table id="table">
+      <thead id="head">
+        <tr>
+          <th>Price</th>
+          <th>Seat</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% flight.tickets.forEach(function(ticket) { %>
+          <tr>
+            <td><%= ticket.price %></td>
+            <td><%= ticket.seat %></td>
+            <td>
+              <form action="/flights/<%= flight._id %>/tickets/<%= ticket._id %>?_method=DELETE" method="POST"> 
+                <button>X</button>
+              </form>
+            </td>
+          </tr>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <h3>No Tickets Yet</h3>
+  <% } %>
