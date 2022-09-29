@@ -1,10 +1,4 @@
-import { Flight } from "../models/flights.js"
-
-function newFlight(req, res) {
-  res.render('flights/new', {
-    title: 'Add Flight'
-  })
-}
+import { Flight } from "../models/flight.js"
 function index(req, res) {
   Flight.find({})
     .then(flights => {
@@ -18,6 +12,13 @@ function index(req, res) {
       res.redirect('/flights')
     })
 }
+
+function newFlight(req, res) {
+  res.render('flights/new', {
+    title: 'Add Flight'
+  })
+}
+
 function create(req, res) {
   Flight.create(req.body)
     .then(flight => {
